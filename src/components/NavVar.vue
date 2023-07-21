@@ -7,7 +7,7 @@
         <b-navbar-nav class="ml-auto">
           <b-nav-item class="mr-3" router-link to="/">Home</b-nav-item>
           <b-nav-item class="mr-3" router-link to="/products">Products</b-nav-item>
-          <b-nav-item href="#">About Us</b-nav-item>
+          <b-nav-item href="#" @click="$emit('openLoginModal')">Login</b-nav-item>
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
