@@ -34,7 +34,6 @@
       </b-form-group>
 
       <b-button type="submit" variant="primary">LOGIN</b-button>
-      <b-button type="reset" variant="danger">Reset</b-button>
       <b-button variant="outline-danger">JOIN</b-button>
     </b-form>
     <b-card class="mt-3" header="Form Data Result">
