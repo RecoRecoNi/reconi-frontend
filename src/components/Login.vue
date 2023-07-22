@@ -58,7 +58,7 @@ export default {
   methods: {
     onSubmit(event) {
       event.preventDefault();
-      alert(JSON.stringify(this.form));
+      // alert(JSON.stringify(this.form));
       this.$store.dispatch("LOGIN", this.form);   // login action
     },
     onReset(event) {

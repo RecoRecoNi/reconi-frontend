@@ -3,33 +3,52 @@ import axios from "axios";
 
 export default new Vuex.Store({
   state: {
-    token: localStorage.getItem("accTkn") || "",
+    token: localStorage.getItem("accTkn"),
     loginDomain: "http://127.0.0.1:8000/user/login/",
   },
   getters: {
     isLogin(state) {
-      return state.token !== "";
+      console.log(state.token);
+      return state.token == null ? false : true
     },
   },
   mutations: {
     setToken(state, token) {
-      console.log("mutation");
+      console.log("setToken--");
       state.token = token;
+      console.log(state.token);
+    },
+    expireToken(state) {
+      console.log("expireToken");
+      state.token = null;
     },
   },
   actions: {
-    LOGIN({ commit }, userData) {
-      console.log(this.state.loginDomain);
+    LOGIN({ state, commit }, userData) {
+      console.log(state.loginDomain);
       console.log(userData);
       axios
         .post("http://127.0.0.1:8000/user/login/", userData)
         .then((data) => {
           commit("setToken", data.data.access);
-          localStorage.setitem("accTkn", data.access);
-          return data;
+          localStorage.setItem("accTkn", data.data.access);
+          location.reload()
         })
         .catch((e) => {
           console.log(e);
+        });
+    },
+    LOGOUT({ commit }) {
+      axios
+        .get("http://127.0.0.1:8000/user/logout/", {
+          headers: {
+            Authorization: `Bearer ${this.state.token}`,
+          },
+        })
+        .then(() => {
+          commit("expireToken");
+          localStorage.removeItem("accTkn");
+          location.reload();
         });
     },
   },
