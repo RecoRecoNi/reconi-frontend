@@ -41,13 +41,25 @@ export default new Vuex.Store({
       console.log(userData);
       // set Token
       axios
-        .post("http://127.0.0.1:8000/user/login/", userData)
+        .post("http://reconi-backend.kro.kr:30005/user/login/", userData)
         .then((data) => {
           commit("setToken", data.data.access);
           commit("setPk", data.data.user.pk);
           localStorage.setItem("accTkn", data.data.access);
           localStorage.setItem("pk", data.data.user.pk);
           location.reload();
+          axios
+            .get(
+              "http://reconi-backend.kro.kr:30005/api/v1/coffee-beans/user_cart_ids/",
+              {
+                headers: {
+                  Authorization: `Bearer ${this.state.token}`,
+                },
+              }
+            )
+            .then((getted) => {
+              commit("setUserCart", getted.data.user_item_ids);
+            });
         })
         .catch((e) => {
           console.log(e);
@@ -55,7 +67,7 @@ export default new Vuex.Store({
     },
     LOGOUT({ commit }) {
       axios
-        .get("http://127.0.0.1:8000/user/logout/", {
+        .get("http://reconi-backend.kro.kr:30005/user/logout/", {
           headers: {
             Authorization: `Bearer ${this.state.token}`,
           },
@@ -66,17 +78,6 @@ export default new Vuex.Store({
           localStorage.removeItem("pk");
           // location.reload();
         });
-    },
-    GETCART({ commit }) {
-      axios
-        .get("http://127.0.0.1:8000/api/v1/coffee-beans/user_cart_ids/", {
-          headers: {
-            Authorization: `Bearer ${this.state.token}`,
-          },
-        })
-        .then((getted) => {
-          commit("setUserCart", getted.data.user_item_ids);
-        })
     },
   },
 });

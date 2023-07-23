@@ -106,7 +106,7 @@ export default{
 
     function getUserData(){
       axios
-      .get('http://127.0.0.1:8000/api/v1/coffee-beans/mypage/', {
+      .get('http://reconi-backend.kro.kr:30005/api/v1/coffee-beans/mypage/', {
         headers:{
           Authorization: `Bearer ${store.state.token}`
         }

@@ -1,6 +1,6 @@
 <template>
   <div class="w-full bg-white">
-    <b-modal v-model="this.modalShow" size="lg" hide-footer title="JOIN COFFLE">
+    <b-modal v-model="this.modalShow" size="lg" hide-footer title="JOIN Coffee Playlist">
       <JoinComponent 
       @closeModal="this.modalShow=!this.modalShow"/>
     </b-modal>

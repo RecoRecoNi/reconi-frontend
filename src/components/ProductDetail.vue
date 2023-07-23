@@ -14,7 +14,7 @@
         {{ selectedBean?.description }}
       </p>
       <img
-        :src="beanImg"
+        :src="getImgUrl(selectedBean?.thumbnail)"
         alt="img"
         style="max-width: 100%; height: auto; display: block"
       />
@@ -122,6 +122,25 @@ export default {
     return {
       beanImg: beanImg,
     };
+  },
+  methods: {
+    getImgUrl(url) {
+      if (typeof url == "string") {
+        if (url.startsWith("/media")) {
+          return "http://reconi-backend.kro.kr:30005/" + url;
+        }
+        if (!url.startsWith("http://reconi-backend.kro.kr:30005/")) {
+          this.new_url = url.replace(
+            "http://reconi-backend.kro.kr",
+            "http://reconi-backend.kro.kr:30005"
+          );
+          return this.new_url;
+        }
+
+      } else {
+        return "http://reconi-backend.kro.kr:30005/" + url;
+      }
+    },
   },
 };
 </script>
