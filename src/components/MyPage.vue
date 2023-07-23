@@ -1,4 +1,13 @@
 <template>
+  <!-- modal -->
+  <div class="w-full bg-white">
+    <b-modal v-model="this.modalShow" size="lg" hide-footer>
+      <template #modal-title>
+      </template>
+      <ProductDetail style="display:inline-flex" :selectedBean="this.selectedBean" />
+    </b-modal>
+  </div>
+
   <!-- Header-->
   <header class="bg-dark py-5">
     <div class="container px-4 px-lg-5 my-5">
@@ -19,38 +28,20 @@
       <div
         class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center"
       >
-        <div class="col mb-5">
-          <div class="card h-100">
-            <!-- Product image-->
-            <img
-              class="card-img-top"
-              src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg"
-              alt="..."
-            />
-            <!-- Product details-->
-            <div class="card-body p-4">
-              <div class="text-center">
-                <!-- Product name-->
-                <h5 class="fw-bolder">Fancy Product</h5>
-                <!-- Product price-->
-                $40.00 - $80.00
-              </div>
-            </div>
-            <!-- Product actions-->
-            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-              <div class="text-center">
-                <a class="btn btn-outline-dark mt-auto" href="#"
-                  >View options</a
-                >
-              </div>
-            </div>
-          </div>
+        <div class="col mb-5" v-for="bean in notColdStart" :key="bean">
+          <Card
+          @openModal="
+          this.modalShow = !this.modalShow;
+          this.selectedBean = $event;
+          "
+          :bean="bean"
+          />
         </div>
       </div>
     </div>
   </section>
 
- <section class="py-5">
+  <section class="py-5">
       <div>
         <h3 class="fw-bolder">COLD START</h3>
       </div>
@@ -58,78 +49,96 @@
       <div
         class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center"
       >
-        <div class="col mb-5">
-          <div class="card h-100">
-            <!-- Product image-->
-            <img
-              class="card-img-top"
-              src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg"
-              alt="..."
-            />
-            <!-- Product details-->
-            <div class="card-body p-4">
-              <div class="text-center">
-                <!-- Product name-->
-                <h5 class="fw-bolder">Fancy Product</h5>
-                <!-- Product price-->
-                $40.00 - $80.00
-              </div>
-            </div>
-            <!-- Product actions-->
-            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-              <div class="text-center">
-                <a class="btn btn-outline-dark mt-auto" href="#"
-                  >View options</a
-                >
-              </div>
-            </div>
-          </div>
+        <div class="col mb-5" v-for="bean in coldStart" :key="bean">
+          <Card
+          @openModal="
+          this.modalShow = !this.modalShow;
+          this.selectedBean = $event;
+          "
+          :bean="bean"
+          />
         </div>
       </div>
     </div>
   </section>
 
- <section class="py-5">
+  <section class="py-5">
       <div>
-        <h3 class="fw-bolder">담기한 상품</h3>
+        <h3 class="fw-bolder">담기 내역</h3>
       </div>
     <div class="container px-4 px-lg-5 mt-5">
       <div
         class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center"
       >
-        <div class="col mb-5">
-          <div class="card h-100">
-            <!-- Product image-->
-            <img
-              class="card-img-top"
-              src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg"
-              alt="..."
-            />
-            <!-- Product details-->
-            <div class="card-body p-4">
-              <div class="text-center">
-                <!-- Product name-->
-                <h5 class="fw-bolder">Fancy Product</h5>
-                <!-- Product price-->
-                $40.00 - $80.00
-              </div>
-            </div>
-            <!-- Product actions-->
-            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-              <div class="text-center">
-                <a class="btn btn-outline-dark mt-auto" href="#"
-                  >View options</a
-                >
-              </div>
-            </div>
-          </div>
+        <div class="col mb-5" v-for="bean in cart" :key="bean">
+          <Card
+          @openModal="
+          this.modalShow = !this.modalShow;
+          this.selectedBean = $event;
+          "
+          :bean="bean"
+          />
         </div>
       </div>
     </div>
   </section>
 </template>
 
-<script setup></script>
+<script>
+import Card from "./Card.vue";
+import ProductDetail from "./ProductDetail.vue";
+import { ref, onMounted } from "vue";
+import axios from "axios";
+import { useStore } from 'vuex';
+
+export default{
+  name: "my-page",
+  components: {
+    ProductDetail,
+    Card,
+  },
+  setup(){
+    const store = useStore()
+    var modalShow = ref(false);
+    var cart = ref([]);
+    var coldStart = ref([]);
+    var notColdStart = ref([]);
+
+    function getUserData(){
+      axios
+      .get('http://127.0.0.1:8000/api/v1/coffee-beans/mypage/', {
+        headers:{
+          Authorization: `Bearer ${store.state.token}`
+        }
+      })
+      .then((getted)=>{
+        console.log(getted);
+        cart.value = getted.data.cart;
+        coldStart.value = getted.data.cold_start;
+        notColdStart.value = getted.data.not_cold_start;
+      })
+      .catch(()=>{
+        console.log("실패😘");
+      })
+    }
+
+    onMounted(()=>{
+      getUserData();
+    });
+
+
+    return {
+      modalShow,
+      getUserData,
+      cart,
+      coldStart,
+      notColdStart,
+
+    }
+  }
+}
+
+</script>
 
 <style scoped>
 @import "./css/styles.css";
