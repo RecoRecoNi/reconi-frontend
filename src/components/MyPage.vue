@@ -22,28 +22,7 @@
   <!-- Section-->
   <section class="py-5">
       <div>
-        <h3 class="fw-bolder">NOT COLD START</h3>
-      </div>
-    <div class="container px-4 px-lg-5 mt-5">
-      <div
-        class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center"
-      >
-        <div class="col mb-5" v-for="bean in notColdStart" :key="bean">
-          <Card
-          @openModal="
-          this.modalShow = !this.modalShow;
-          this.selectedBean = $event;
-          "
-          :bean="bean"
-          />
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="py-5">
-      <div>
-        <h3 class="fw-bolder">COLD START</h3>
+        <h3 class="fw-bolder"> 테스트 결과 추천 받은 상품들이에요. </h3>
       </div>
     <div class="container px-4 px-lg-5 mt-5">
       <div
@@ -64,7 +43,28 @@
 
   <section class="py-5">
       <div>
-        <h3 class="fw-bolder">담기 내역</h3>
+        <h3 class="fw-bolder"> 좋아하는 상품과 유사한 상품들이에요. </h3>
+      </div>
+    <div class="container px-4 px-lg-5 mt-5">
+      <div
+        class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center"
+      >
+        <div class="col mb-5" v-for="bean in notColdStart" :key="bean">
+          <Card
+          @openModal="
+          this.modalShow = !this.modalShow;
+          this.selectedBean = $event;
+          "
+          :bean="bean"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-5">
+      <div>
+        <h3 class="fw-bolder"> 당신이 좋아하는 상품이에요. </h3>
       </div>
     <div class="container px-4 px-lg-5 mt-5">
       <div
