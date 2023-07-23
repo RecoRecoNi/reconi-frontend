@@ -1,4 +1,10 @@
 <template>
+  <div class="w-full bg-white">
+    <b-modal v-model="this.modalShow" size="lg" hide-footer title="JOIN COFFLE">
+      <JoinComponent 
+      @closeModal="this.modalShow=!this.modalShow"/>
+    </b-modal>
+  </div>
   <div>
     <H1> Login </H1>
   </div>
@@ -34,19 +40,23 @@
       </b-form-group>
 
       <b-button type="submit" variant="primary">LOGIN</b-button>
-      <b-button variant="outline-danger">JOIN</b-button>
+      <b-button @click="this.modalShow= !this.modalShow" variant="outline-danger">JOIN</b-button>
     </b-form>
-    <b-card class="mt-3" header="Form Data Result">
+    <!-- 테스트임 -->
+    <!-- <b-card class="mt-3" header="Form Data Result">
       <pre class="m-0">{{ form }}</pre>
-    </b-card>
+    </b-card> -->
   </div>
 </template>
 
 <script>
+import JoinComponent from './Join.vue';
+
 export default {
   name: "login-component",
   data() {
     return {
+      modalShow:false,
       form: {
         email: "",
         password: "",
@@ -54,11 +64,14 @@ export default {
       show: true,
     };
   },
+  components:{
+    JoinComponent,
+  },
   methods: {
     onSubmit(event) {
       event.preventDefault();
       // alert(JSON.stringify(this.form));
-      this.$store.dispatch("LOGIN", this.form);   // login action
+      this.$store.dispatch("LOGIN", this.form); // login action
     },
     onReset(event) {
       event.preventDefault();
