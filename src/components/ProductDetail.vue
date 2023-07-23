@@ -98,7 +98,7 @@
     </div>
     <div class="pt-4">
       <b-button
-        :href="selectedBean?.coupang_link"
+        :href="selectedBean?.purchase"
         target="_blank"
         block
         variant="outline-primary"
@@ -127,7 +127,8 @@ export default {
 </script>
 
 <style scoped>
-@import "./style.css" .product-detail {
+@import "./style.css";
+.product-detail {
   display: inline-flex;
   padding: 40px 20px;
   justify-content: center;
