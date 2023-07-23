@@ -27,6 +27,7 @@ export default {
       // alert(`${!this.$store.state.token}`)
       // event.preventDefault();
       this.$store.dispatch("LOGOUT");   // logout action
+      this.$router.push('/');
     }
   },
   mounted(){
