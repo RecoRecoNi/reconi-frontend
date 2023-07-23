@@ -7,8 +7,9 @@
         <b-navbar-nav class="ml-auto">
           <b-nav-item class="mr-3" router-link to="/">Home</b-nav-item>
           <b-nav-item class="mr-3" router-link to="/products">Products</b-nav-item>
-          <b-nav-item v-if="!$store.getters.isLogin" href="#" @click="$emit('openLoginModal')">Login</b-nav-item>
-          <b-nav-item v-else @click="onLogOut">Logout</b-nav-item>
+          <b-nav-item v-if="!$store.getters.isLogin" href="#" @click="$emit('openLoginModal')" class="mr-3">Login</b-nav-item>
+          <b-nav-item v-else @click="onLogOut" class="mr-3">Logout</b-nav-item>
+          <b-nav-item @click="if (!$store.getters.isLogin) this.$emit('openLoginModal'); else this.$router.push(`/mypage/`)" class="mr-3">MyPage</b-nav-item>
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>

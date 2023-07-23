@@ -4,6 +4,7 @@ import axios from "axios";
 export default new Vuex.Store({
   state: {
     token: localStorage.getItem("accTkn"),
+    pk: localStorage.getItem("pk"),
     loginDomain: "http://127.0.0.1:8000/user/login/",
   },
   getters: {
@@ -18,9 +19,15 @@ export default new Vuex.Store({
       state.token = token;
       console.log(state.token);
     },
+    setPk(state, pk){
+      console.log("setPk");
+      state.pk = pk;
+      console.log(state.pk);
+    },
     expireToken(state) {
       console.log("expireToken");
       state.token = null;
+      state.pk = null;
     },
   },
   actions: {
@@ -31,7 +38,9 @@ export default new Vuex.Store({
         .post("http://127.0.0.1:8000/user/login/", userData)
         .then((data) => {
           commit("setToken", data.data.access);
+          commit("setPk", data.data.user.pk);
           localStorage.setItem("accTkn", data.data.access);
+          localStorage.setItem("pk", data.data.user.pk);
           location.reload()
         })
         .catch((e) => {
@@ -48,6 +57,7 @@ export default new Vuex.Store({
         .then(() => {
           commit("expireToken");
           localStorage.removeItem("accTkn");
+          localStorage.removeItem("pk");
           location.reload();
         });
     },
