@@ -15,7 +15,10 @@
         {{ bean?.description }}
       </b-card-text>
 
-      <b-button variant="outline-primary" @click="$emit('openModal', bean)">원두 보러가기</b-button>
+      <div>
+        <b-button variant="outline-primary" @click="$emit('openModal', bean)">원두 보러가기</b-button>
+        <b-button variant="primary">담기</b-button>
+      </div>
     </b-card>
   </div>
 </template>

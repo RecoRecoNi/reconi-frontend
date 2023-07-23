@@ -72,6 +72,7 @@ export default {
       event.preventDefault();
       // alert(JSON.stringify(this.form));
       this.$store.dispatch("LOGIN", this.form); // login action
+      // this.$store.dispatch("GETCART");
     },
     onReset(event) {
       event.preventDefault();
