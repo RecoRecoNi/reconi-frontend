@@ -38,6 +38,9 @@ export default new Vuex.Store({
     },
     addUserCart(state, beanId){
       state.userCart.push(beanId);
+    },
+    removeFromCart(state, beanId){
+      state.userCart.splice(state.userCart.indexOf(beanId), 1);
     }
   },
   actions: {
