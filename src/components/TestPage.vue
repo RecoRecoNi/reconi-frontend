@@ -30,7 +30,7 @@
             v-model="this.formData.gender"
             :options="[
               { text: '남자', value: 'M' },
-              { text: '여자', value: 'W' },
+              { text: '여자', value: 'F' },
             ]"
             buttons
             button-variant="outline-primary"
