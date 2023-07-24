@@ -36,6 +36,9 @@ export default new Vuex.Store({
     setUserCart(state, cart) {
       state.userCart = cart;
     },
+    addUserCart(state, beanId){
+      state.userCart.push(beanId);
+    }
   },
   actions: {
     LOGIN({ state, commit }, userData) {

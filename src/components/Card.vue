@@ -19,13 +19,15 @@
         <b-button variant="outline-primary" @click="$emit('openModal', bean)"
           >원두 보러가기</b-button
         >
-        <b-button v-if="!this.$store.getters.isInCart(bean?.id)" variant="primary">담기</b-button>
+        <b-button v-if="!this.$store.getters.isInCart(bean?.id)" @click="addCart(bean?.id)" variant="primary">담기</b-button>
       </div>
     </b-card>
   </div>
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
   name: "main-product-sample-card",
   props: {
@@ -58,6 +60,17 @@ export default {
         return "http://reconi-backend.kro.kr:30005/" + url;
       }
     },
+    addCart(beanId){
+      axios.post("http://reconi-backend.kro.kr:30005/api/v1/coffee-cart/add_to_cart/", {coffee_bean_id:beanId}, {
+        headers : {
+          Authorization: `Bearer ${this.$store.state.token}`
+        }
+      }).then(()=>{
+        this.$store.commit('addUserCart', beanId);
+      }).catch((e)=>{
+        console.log(e);
+      })
+    }
   },
 };
 </script>
