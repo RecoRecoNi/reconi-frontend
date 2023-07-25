@@ -94,6 +94,8 @@
               style="color:black"
               v-for="decaf in ['디카페인']"
               :key="decaf"
+              @click="selectDecaf"
+              :style="isDecaf ? 'background-color : aliceblue' : ''"
               >{{ decaf }}</a
             >
           </div>
@@ -168,6 +170,23 @@ export default {
     var roastRange = ref([0, 10]);
     var origins_country = ref([]);
     var roastery = ref('');
+    var isDecaf = ref(false)
+
+    function selectDecaf(){
+      if (!isDecaf.value){
+        axios.get("http://reconi-backend.kro.kr:30005/api/v1/coffee-beans/decaffeinated_coffee_beans/")
+        .then((getted)=>{
+          bean_data.value = getted.data;
+        })
+        .catch((e)=>{
+          console.log(e);
+        })
+      }
+      else{
+        getinitpage()
+      }
+      isDecaf.value = !isDecaf.value
+    }
 
     function setRoastery(input){
       roastery.value = input
@@ -238,7 +257,8 @@ export default {
             next.value = next.value.replace('http://reconi-backend.kro.kr', 'http://reconi-backend.kro.kr:30005')
           }
 
-          bean_data.value = bean_data.value.concat(getted.data.results);
+          // bean_data.value = bean_data.value.concat(getted.data.results);
+          bean_data.value = getted.data.results;
         })
         .catch(() => {
           console.log("실패😘");
@@ -278,6 +298,7 @@ export default {
       getOriginColor,
       setRoastery,
       setRoasteryColor,
+      selectDecaf,
 
       origins,
       roasteries,
@@ -293,6 +314,7 @@ export default {
       roastRange,
       origins_country,
       roastery,
+      isDecaf,
     };
   },
 };
