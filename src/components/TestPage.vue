@@ -1,5 +1,5 @@
 <template>
-  <section class="py-5">
+  <section class="py-5" v-if="this.step != 5">
     <div>
       <h1 class="fw-bolder">정확한 추천을 위해 당신에 대해 알려주세요.</h1>
       <h2 class="lead fw-normal mb-0" style="color: black">
@@ -175,7 +175,10 @@
     </div>
   </section>
 
-  <TestResult :beans="this.beans" v-if="this.test_done"></TestResult>
+  <TestResult
+    :beans="this.beans"
+    v-if="this.test_done && this.step == 5"
+  ></TestResult>
 </template>
 
 <script>
@@ -190,11 +193,11 @@ export default {
         gender: "",
         age: "",
         favorite_scent: "",
-        aroma: "",
-        acidity: "",
-        sweetness: "",
-        body_feel: "",
-        roasting_characteristics: "",
+        aroma: "0",
+        acidity: "0",
+        sweetness: "0",
+        body_feel: "0",
+        roasting_characteristics: "0",
       },
       beans: {},
     };
@@ -213,9 +216,10 @@ export default {
           }
         )
         .then((getted) => {
-          this.test_done = true
+          this.step = 5;
+          this.test_done = true;
           this.beans = getted.data;
-          console.log(getted);
+          window.scrollTo(0, 0); // 페이지 최상단 이동
         })
         .catch((e) => {
           console.log(e);
