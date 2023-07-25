@@ -15,7 +15,7 @@ export default new Vuex.Store({
     },
     isInCart: (state) => (beanId) => {
       return state.userCart.includes(beanId);
-    }
+    },
   },
   mutations: {
     setToken(state, token) {
@@ -36,12 +36,12 @@ export default new Vuex.Store({
     setUserCart(state, cart) {
       state.userCart = cart;
     },
-    addUserCart(state, beanId){
+    addUserCart(state, beanId) {
       state.userCart.push(beanId);
     },
-    removeFromCart(state, beanId){
+    removeFromCart(state, beanId) {
       state.userCart.splice(state.userCart.indexOf(beanId), 1);
-    }
+    },
   },
   actions: {
     LOGIN({ state, commit }, userData) {
@@ -56,22 +56,9 @@ export default new Vuex.Store({
           localStorage.setItem("accTkn", data.data.access);
           localStorage.setItem("pk", data.data.user.pk);
           location.reload();
-          // axios
-          //   .get(
-          //     "http://reconi-backend.kro.kr:30005/api/v1/coffee-beans/user_cart_ids/",
-          //     {
-          //       headers: {
-          //         Authorization: `Bearer ${this.state.token}`,
-          //       },
-          //     }
-          //   )
-          //   .then((getted) => {
-          //     commit("setUserCart", getted.data.user_item_ids);
-          //     localStorage.setItem("cart", getted.data.user_item_ids);
-          //   });
         })
         .catch(() => {
-          console.log('계정 정보가 잘못되었습니다.');
+          console.log("계정 정보가 잘못되었습니다.");
           alert("계정 정보가 잘못되었습니다.");
         });
     },
@@ -86,8 +73,16 @@ export default new Vuex.Store({
           commit("expireToken");
           localStorage.removeItem("accTkn");
           localStorage.removeItem("pk");
-          localStorage.removeItem("cart")
+          localStorage.removeItem("cart");
           // location.reload();
+        })
+        .catch((e) => {
+          if (e.response.status == "403") {
+            commit("expireToken");
+            localStorage.removeItem("accTkn");
+            localStorage.removeItem("pk");
+            localStorage.removeItem("cart");
+          }
         });
     },
   },

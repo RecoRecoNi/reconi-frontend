@@ -31,6 +31,8 @@ export default {
     var modalShow = ref(false);
 
     onMounted(()=>{
+      console.log('------------------')
+      console.log(store.state.token)
       if (store.getters.isLogin){
         axios.get('http://reconi-backend.kro.kr:30005/api/v1/coffee-beans/user_cart_ids/', {
           headers: {
