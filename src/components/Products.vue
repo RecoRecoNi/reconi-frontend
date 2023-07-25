@@ -52,6 +52,7 @@
       </b-container>
 
       <b-button
+        v-if="nextButtonState"
         block
         variant="primary"
         @click="handleNotificationListScroll"
@@ -66,27 +67,26 @@
         <ul class="list-unstyled components mb-5">
           <li>
             <a> 신맛 </a>
-            <VueSlider v-model="acidRange" :max="10" :min="0" :enable-cross="false" :interval="1"  sync>
+            <VueSlider v-model="acidRange" :max="10" :min="0" :enable-cross="false" :interval="1"  :lazy="true" sync>
             </VueSlider>
           </li>
           <li>
             <a>단맛</a>
-            <VueSlider v-model="sweetyRange" :max="10" :min="0" :enable-cross="false" :interval="1"  sync>
+            <VueSlider v-model="sweetyRange" :max="10" :min="0" :enable-cross="false" :interval="1" :lazy="true" sync>
             </VueSlider>
           </li>
           <li>
             <a>바디감</a>
-            <VueSlider v-model="bodyRange" :max="10" :min="0" :enable-cross="false" :interval="1"  sync>
+            <VueSlider v-model="bodyRange" :max="10" :min="0" :enable-cross="false" :interval="1" :lazy="true" sync>
             </VueSlider>
           </li>
           <li>
             <a>로스팅</a>
-            <VueSlider v-model="roastRange" :max="10" :min="0" :enable-cross="false" :interval="1"  sync>
+            <VueSlider v-model="roastRange" :max="10" :min="0" :enable-cross="false" :interval="1" :lazy="true" sync>
             </VueSlider>
           </li>
         </ul>
         <div class="mb-5">
-          <button @click="apiTest">테스트</button>
           <h5>카페인 여부</h5>
           <div class="tagcloud mt-4">
             <a
@@ -136,7 +136,7 @@
 <script>
 import Card from "./Card.vue";
 import ProductDetail from "./ProductDetail.vue";
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 import axios from "axios";
 
 export default {
@@ -159,6 +159,9 @@ export default {
     var origins = ref([]);
     var roasteries = ref([]);
 
+    // 버튼 정보
+    var nextButtonState = ref(false);
+
     // modal 정보
     var modalShow = ref(false);
     var selectedBean = ref(null);
@@ -171,6 +174,21 @@ export default {
     var origins_country = ref([]);
     var roastery = ref('');
     var isDecaf = ref(false)
+
+    watch([
+      () => acidRange.value[0],
+      () => acidRange.value[1],
+      () => sweetyRange.value[0],
+      () => sweetyRange.value[1],
+      () => bodyRange.value[0],
+      () => bodyRange.value[1],
+      () => roastRange.value[0],
+      () => roastRange.value[1],
+      origins_country.value,
+      roastery.value
+    ], ()=>{
+      filtering()
+    })
 
     function selectDecaf(){
       origins_country.value = []
@@ -212,14 +230,14 @@ export default {
       }
     }
 
-    function apiTest(){
+    function filtering(){
       const [acidity__gte, acidity__lte] = acidRange.value;
       const [sweetness__gte, sweetness__lte] = sweetyRange.value;
       const [body__gte, body__lte] = bodyRange.value;
       const [roasting_point__gte, roasting_point__lte] = roastRange.value;
 
       axios.get("http://reconi-backend.kro.kr:30005/api/v1/coffee-beans/category_filtered/", {
-        origins_country: origins_country.value.join(''),
+        origins_country: origins_country.value.join(','),
         roastery : '콩스콩스',
         acidity__gte : acidity__gte,
         acidity__lte : acidity__lte,
@@ -230,6 +248,7 @@ export default {
         roasting_point__gte : roasting_point__gte,
         roasting_point__lte : roasting_point__lte,
       }).then((getted)=>{
+        bean_data.value = getted.data;
         console.log(getted);
       }).catch((e)=>{
         console.log(e);
@@ -242,6 +261,7 @@ export default {
         .then((getted) => {
           origins.value = getted.data.origin;
           roasteries.value = getted.data.roastery;
+          nextButtonState.value = true;
         })
         .catch(() => {
           console.log("실패😘");
@@ -255,6 +275,7 @@ export default {
           console.log(getted);
           prev.value = getted.data.previous;
           next.value = getted.data.next;
+          nextButtonState.value = true;
 
           // port number insert
           if (!next.value.startsWith('http://reconi-backend.kro.kr:30005')){
@@ -285,6 +306,8 @@ export default {
           console.log("실행됨");
         })
         .catch((e) => {
+          alert('마지막 페이지입니다.')
+          nextButtonState.value = false;
           console.log("실패😘");
           console.log(e);
         });
@@ -295,7 +318,6 @@ export default {
       console.log(scrollHeight, scrollTop, clientHeight);
       const isAtTheBottom = scrollHeight === scrollTop + clientHeight;
       if (isAtTheBottom) {
-        // setTimeout(() => getNextPage(), 1000);
         getNextPage();
       }
     }
@@ -307,7 +329,7 @@ export default {
 
     return {
       getNextPage,
-      apiTest,
+      filtering,
       addOriginFilter,
       getOriginColor,
       setRoastery,
@@ -330,6 +352,7 @@ export default {
       origins_country,
       roastery,
       isDecaf,
+      nextButtonState,
     };
   },
 };
