@@ -110,50 +110,55 @@
         <p>향미는 원두가 가지고 있는 향의 정도를 나타냅니다.</p>
         <VueSlider
           v-model="this.formData.aroma"
+          :marks="true"
           :min="0"
           :max="10"
           :interval="1"
-          style="padding-top: 50px; padding-bottom: 30px"
+          style="padding-top: 50px; padding-bottom: 80px"
         >
         </VueSlider>
         <h5>커피를 드실 때 선호하는 산미의 정도를 알려주세요</h5>
         <p>산미는 원두가 가지고 있는 신 맛의 정도를 나타냅니다.</p>
         <VueSlider
           v-model="this.formData.acidity"
+          :marks="true"
           :min="0"
           :max="10"
           :interval="1"
-          style="padding-top: 50px; padding-bottom: 30px"
+          style="padding-top: 50px; padding-bottom: 80px"
         >
         </VueSlider>
         <h5>커피를 드실 때 선호하는 단 맛의 정도를 알려주세요</h5>
         <p>단 맛은 원두가 가지고 있는 단 맛의 정도를 나타냅니다.</p>
         <VueSlider
           v-model="this.formData.sweetness"
+          :marks="true"
           :min="0"
           :max="10"
           :interval="1"
-          style="padding-top: 50px; padding-bottom: 30px"
+          style="padding-top: 50px; padding-bottom: 80px"
         >
         </VueSlider>
         <h5>커피를 드실 때 선호하는 바디감의 정도를 알려주세요</h5>
         <p>바디감은 커피가 입 안으로 들어왔을 때 주는 무게감을 나타냅니다.</p>
         <VueSlider
           v-model="this.formData.body_feel"
+          :marks="true"
           :min="0"
           :max="10"
           :interval="1"
-          style="padding-top: 50px; padding-bottom: 30px"
+          style="padding-top: 50px; padding-bottom: 80px"
         >
         </VueSlider>
         <h5>커피를 드실 때 선호하는 원두 로스팅의 정도를 알려주세요</h5>
         <p>로스팅정도는 원두를 가열하여 볶은 정도를 의미합니다.</p>
         <VueSlider
           v-model="this.formData.roasting_characteristics"
+          :marks="true"
           :min="0"
           :max="10"
           :interval="1"
-          style="padding-top: 50px; padding-bottom: 30px"
+          style="padding-top: 50px; padding-bottom: 80px"
         >
         </VueSlider>
         <b-container>
@@ -162,7 +167,7 @@
               <b-button @click="this.step = 3"> before </b-button>
             </b-col>
             <b-col>
-              <b-button @click="onSubmit"> next </b-button>
+              <b-button variant="danger" @click="onSubmit"> submit </b-button>
             </b-col>
           </b-row>
         </b-container>
