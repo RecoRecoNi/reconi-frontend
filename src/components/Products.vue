@@ -173,6 +173,8 @@ export default {
     var isDecaf = ref(false)
 
     function selectDecaf(){
+      origins_country.value = []
+      roastery.value = ''
       if (!isDecaf.value){
         axios.get("http://reconi-backend.kro.kr:30005/api/v1/coffee-beans/decaffeinated_coffee_beans/")
         .then((getted)=>{
@@ -189,7 +191,8 @@ export default {
     }
 
     function setRoastery(input){
-      roastery.value = input
+      isDecaf.value = false;
+      roastery.value = input;
     }
 
     function setRoasteryColor(input){
@@ -201,6 +204,7 @@ export default {
     }
 
     function addOriginFilter(origin){
+      isDecaf.value = false;
       if (origins_country.value.includes(origin)){
         origins_country.value.splice(origins_country.value.indexOf(origin))
       } else{
@@ -286,6 +290,16 @@ export default {
         });
     }
 
+      function handleNotificationListScroll(e) {
+      const { scrollHeight, scrollTop, clientHeight } = e.target;
+      console.log(scrollHeight, scrollTop, clientHeight);
+      const isAtTheBottom = scrollHeight === scrollTop + clientHeight;
+      if (isAtTheBottom) {
+        // setTimeout(() => getNextPage(), 1000);
+        getNextPage();
+      }
+    }
+
     onMounted(() => {
       getOrigins();
       getinitpage();
@@ -299,6 +313,7 @@ export default {
       setRoastery,
       setRoasteryColor,
       selectDecaf,
+      handleNotificationListScroll,
 
       origins,
       roasteries,
