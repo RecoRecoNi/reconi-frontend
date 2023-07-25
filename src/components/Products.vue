@@ -86,11 +86,12 @@
           </li>
         </ul>
         <div class="mb-5">
+          <button @click="apiTest">테스트</button>
           <h5>카페인 여부</h5>
           <div class="tagcloud mt-4">
             <a
-              href="#"
               class="tag-cloud-link"
+              style="color:black"
               v-for="decaf in ['디카페인']"
               :key="decaf"
               >{{ decaf }}</a
@@ -101,10 +102,12 @@
           <h5>원산지</h5>
           <div class="tagcloud mt-4">
             <a
-              href="#"
               class="tag-cloud-link"
+              style="color : black ;cursor:pointer;"
               v-for="origin in this.origins"
               :key="origin"
+              @click="addOriginFilter(origin)"
+              :style="getOriginColor(origin)"
               >{{ origin }}</a
             >
           </div>
@@ -113,10 +116,12 @@
           <h5>로스터리</h5>
           <div class="tagcloud mt-4">
             <a
-              href="#"
               class="tag-cloud-link"
               v-for="roastery in this.roasteries"
               :key="roastery"
+              @click="setRoastery(roastery)"
+              style="color:black; cursor:pointer;"
+              :style="setRoasteryColor(roastery)"
               >{{ roastery }}</a
             >
           </div>
@@ -140,11 +145,6 @@ export default {
   },
   data() {
     return {
-      // filter info
-      acidRange:[0, 10],
-      sweetyRange:[0,10],
-      bodyRange:[0,10],
-      roastRange:[0,10],
     };
   },
   // composition API
@@ -154,13 +154,64 @@ export default {
     var prev = ref("");
     var next = ref("");
     var bean_data = ref([]);
-
     var origins = ref([]);
     var roasteries = ref([]);
 
     // modal 정보
     var modalShow = ref(false);
     var selectedBean = ref(null);
+
+    // filter 정보
+    var acidRange = ref([0, 10]);
+    var sweetyRange = ref([0, 10]);
+    var bodyRange = ref([0, 10]);
+    var roastRange = ref([0, 10]);
+    var origins_country = ref([]);
+    var roastery = ref('');
+
+    function setRoastery(input){
+      roastery.value = input
+    }
+
+    function setRoasteryColor(input){
+      return roastery.value===input ? 'background-color : aliceblue' : ''
+    }
+
+    function getOriginColor(origin){
+      return origins_country.value.includes(origin) ? 'background-color : aliceblue' : ''
+    }
+
+    function addOriginFilter(origin){
+      if (origins_country.value.includes(origin)){
+        origins_country.value.splice(origins_country.value.indexOf(origin))
+      } else{
+        origins_country.value.push(origin)
+      }
+    }
+
+    function apiTest(){
+      const [acidity__gte, acidity__lte] = acidRange.value;
+      const [sweetness__gte, sweetness__lte] = sweetyRange.value;
+      const [body__gte, body__lte] = bodyRange.value;
+      const [roasting_point__gte, roasting_point__lte] = roastRange.value;
+
+      axios.get("http://reconi-backend.kro.kr:30005/api/v1/coffee-beans/category_filtered/", {
+        origins_country: origins_country.value.join(''),
+        roastery : '콩스콩스',
+        acidity__gte : acidity__gte,
+        acidity__lte : acidity__lte,
+        sweetness__gte : sweetness__gte,
+        sweetness__lte : sweetness__lte,
+        body__gte : body__gte,
+        body__lte : body__lte,
+        roasting_point__gte : roasting_point__gte,
+        roasting_point__lte : roasting_point__lte,
+      }).then((getted)=>{
+        console.log(getted);
+      }).catch((e)=>{
+        console.log(e);
+      })
+    }
 
     function getOrigins() {
       axios
@@ -215,22 +266,19 @@ export default {
         });
     }
 
-    function handleNotificationListScroll(e) {
-      const { scrollHeight, scrollTop, clientHeight } = e.target;
-      console.log(scrollHeight, scrollTop, clientHeight);
-      const isAtTheBottom = scrollHeight === scrollTop + clientHeight;
-      if (isAtTheBottom) {
-        // setTimeout(() => getNextPage(), 1000);
-        getNextPage();
-      }
-    }
-
     onMounted(() => {
       getOrigins();
       getinitpage();
     });
 
     return {
+      getNextPage,
+      apiTest,
+      addOriginFilter,
+      getOriginColor,
+      setRoastery,
+      setRoasteryColor,
+
       origins,
       roasteries,
       page,
@@ -239,8 +287,12 @@ export default {
       next,
       modalShow,
       selectedBean,
-      getNextPage,
-      handleNotificationListScroll,
+      acidRange,
+      sweetyRange,
+      bodyRange,
+      roastRange,
+      origins_country,
+      roastery,
     };
   },
 };
