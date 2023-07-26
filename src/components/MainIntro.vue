@@ -6,7 +6,7 @@
           당신에게 어울리는 커피를 <br />
           찾아드릴게요
         </h1>
-        <p class="lead fw-normal text-white-80 mb-0 p-4">
+        <p class="lead fw-normal text-white mb-0 p-4">
           누구에게나 똑같은 커피가 아닌, 오직 당신을 위한 커피를 AI가
           추천드립니다.
         </p>
@@ -73,8 +73,7 @@ export default {
   justify-content: center;
   align-items: center;
   gap: 20px;
-  /* background-image: url('../assets/mainpage/main-sample.jpg'); */
-  background-image: url("../../public/main-sample.jpg");
+  background-image: url("../../public/test.jpg");
   /* background-size : contain; */
   /* background-size : 100% 100%; */
   /* background: var(--light-primary-origin, #3563e9); */
