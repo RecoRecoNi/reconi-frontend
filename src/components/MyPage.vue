@@ -26,7 +26,7 @@
       </div>
     <div class="container px-4 px-lg-5 mt-5">
       <div
-        class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-3 justify-content-center"
+        class="row gx-4 gx-lg-5 row-cols-1 row-cols-md-2 row-cols-xl-3 justify-content-center"
       >
         <div class="col mb-5" v-for="bean in coldStart" :key="bean">
           <Card
@@ -47,7 +47,7 @@
       </div>
     <div class="container px-4 px-lg-5 mt-5">
       <div
-        class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-3 justify-content-center"
+        class="row gx-4 gx-lg-5 row-cols-1 row-cols-md-2 row-cols-xl-3 justify-content-center"
       >
         <div class="col mb-5" v-for="bean in notColdStart" :key="bean">
           <Card
@@ -68,7 +68,7 @@
       </div>
     <div class="container px-4 px-lg-5 mt-5">
       <div
-        class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center"
+        class="row gx-4 gx-lg-5 row-cols-1 row-cols-md-2 row-cols-xl-3 justify-content-center"
       >
         <div class="col mb-5" v-for="bean in cart" :key="bean">
           <Card
