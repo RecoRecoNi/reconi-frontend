@@ -11,7 +11,7 @@
       :style="styleObject"
     >
       <b-card-title style="word-break:keep-all; min-height:12vh; display: flex; justify-content: center; align-content: center; flex-wrap: wrap">{{ bean?.title }}</b-card-title>
-      <b-card-text style="min-height:2vh">
+      <b-card-text style="min-height:2vh; font-size:0.8rem">
         <!-- {{ bean?.description }} -->
         {{ get_keywords }}
       </b-card-text>
@@ -82,7 +82,7 @@ export default {
       }
       if (this.bean?.body >= 8){
         keywords += '#묵직한  '
-      } else if (this.bean.body <= 4){
+      } else if (this.bean?.body <= 4){
         keywords += '#가벼운  '
       }
       if (this.bean?.origins.length >= 2){
