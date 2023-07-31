@@ -32,12 +32,12 @@
         </b-form-group>
       </b-col>
       <b-col style="padding:40px; padding-bottom:80px">
-        <b-button @click="this.step = 2"> next </b-button>
+        <b-button @click="this.step = 2" variant="outline-success"> next </b-button>
       </b-col>
     </b-row>
 
-    <b-row v-if="this.step == 2">
-      <b-col cols="12">
+    <b-row v-if="this.step == 2" style="justify-content: center;">
+      <b-col cols="4">
         <h5>Step2</h5>
         <b-form-group
           id="fileset-2"
@@ -47,24 +47,24 @@
         >
           <b-form-input
             id="input-2"
-            :type="number"
             v-model="this.formData.age"
             size="lg"
+            :type="number"
             :state="ageState"
           ></b-form-input>
           <b-form-invalid-feedback id="input-2">
-            input must be number
+            input must be number(12~100)
           </b-form-invalid-feedback>
         </b-form-group>
       </b-col>
-      <b-col>
+      <b-col cols="12">
         <b-container style="padding:40px; padding-bottom:80px">
           <b-row>
             <b-col>
-              <b-button @click="this.step = 1"> before </b-button>
+              <b-button @click="this.step = 1" variant="outline-secondary"> before </b-button>
             </b-col>
             <b-col>
-              <b-button @click="this.step = 3"> next </b-button>
+              <b-button @click="this.step = 3" variant="outline-success"> next </b-button>
             </b-col>
           </b-row>
         </b-container>
@@ -100,10 +100,10 @@
         <b-container style="padding:40px; padding-bottom:80px">
           <b-row>
             <b-col>
-              <b-button @click="this.step = 2"> before </b-button>
+              <b-button @click="this.step = 2" variant="outline-secondary"> before </b-button>
             </b-col>
             <b-col>
-              <b-button @click="this.step = 4"> next </b-button>
+              <b-button @click="this.step = 4" variant="outline-success"> next </b-button>
             </b-col>
           </b-row>
         </b-container>
@@ -111,7 +111,10 @@
     </b-row>
     <b-row v-if="this.step == 4">
       <b-col cols="12">
-        <h5 style="padding-bottom: 50px">Step4</h5>
+        <h5>Step4</h5>
+        <h5> 선호하는 커핑 노트를 알려주세요 </h5>
+        <p style="padding-bottom: 50px" >숫자가 높을 수록 각 정도가 강함을 의미하며, 잘 모르는 경우 5점으로 응답해주세요.</p>
+
         <h5>커피를 드실 때 선호하는 향미의 정도를 알려주세요</h5>
         <p>향미는 원두가 가지고 있는 향의 정도를 나타냅니다.</p>
         <VueSlider
@@ -180,7 +183,7 @@
         <b-container style="padding-top: 50px; padding-bottom: 80px">
           <b-row>
             <b-col>
-              <b-button @click="this.step = 3"> before </b-button>
+              <b-button @click="this.step = 3" variant="outline-secondary"> before </b-button>
             </b-col>
             <b-col>
               <b-button variant="danger" @click="onSubmit"> submit </b-button>
@@ -210,11 +213,11 @@ export default {
         gender: "",
         age: "",
         favorite_scent: "",
-        aroma: "0",
-        acidity: "0",
-        sweetness: "0",
-        body_feel: "0",
-        roasting_characteristics: "0",
+        aroma: "5",
+        acidity: "5",
+        sweetness: "5",
+        body_feel: "5",
+        roasting_characteristics: "5",
       },
       beans: {},
     };
@@ -249,7 +252,7 @@ export default {
   computed: {
     ageState() {
       var numberPattern = /^[0-9]+$/;
-      return numberPattern.test(this.formData.age);
+      return numberPattern.test(this.formData.age) && (this.formData.age <= 100) && (this.formData.age >= 12);
     },
   },
 };
