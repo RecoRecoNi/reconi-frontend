@@ -10,9 +10,10 @@
       class="mb-2"
       :style="styleObject"
     >
-      <b-card-title>{{ bean?.title }}</b-card-title>
-      <b-card-text>
-        {{ bean?.description }}
+      <b-card-title style="word-break:keep-all; min-height:12vh; display: flex; justify-content: center; align-content: center; flex-wrap: wrap">{{ bean?.title }}</b-card-title>
+      <b-card-text style="min-height:2vh">
+        <!-- {{ bean?.description }} -->
+        {{ get_keywords }}
       </b-card-text>
 
       <b-container>
@@ -66,6 +67,29 @@ export default {
         new_url: null,
       },
     };
+  },
+  computed:{
+    get_keywords(){
+      let keywords = '';
+      if (this.bean?.aroma >= 8){
+        keywords += '#향이 강한  '
+      }
+      if (this.bean?.acidity >= 7){
+        keywords += '#신맛  '
+      }
+      if (this.bean?.sweetness >= 8){
+        keywords += '#단맛  '
+      }
+      if (this.bean?.body >= 8){
+        keywords += '#묵직한  '
+      } else if (this.bean.body <= 4){
+        keywords += '#가벼운  '
+      }
+      if (this.bean?.origins.length >= 2){
+        keywords += '#블렌디드'
+      } 
+      return keywords;
+    }
   },
   methods: {
     getImgUrl(url) {
